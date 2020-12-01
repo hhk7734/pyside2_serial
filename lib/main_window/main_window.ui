@@ -32,7 +32,7 @@
             <item row="0" column="1">
              <widget class="QPushButton" name="portRefreshPushButton">
               <property name="text">
-               <string>refresh</string>
+               <string>Refresh</string>
               </property>
              </widget>
             </item>
@@ -216,9 +216,9 @@
              </layout>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="portOpenPushButton">
+             <widget class="QPushButton" name="portOpenClosePushButton">
               <property name="text">
-               <string>open</string>
+               <string>Open</string>
               </property>
              </widget>
             </item>
