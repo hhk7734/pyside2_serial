@@ -52,6 +52,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewPlainTextEdit.mousePressEvent = self.textViewMouseEvent
         self.textViewPlainTextEdit.mouseReleaseEvent = self.textViewMouseEvent
 
+        self.textViewSendPushButton.clicked.connect(self.sendData)
+        self.textViewSendLineEdit.returnPressed.connect(self.sendData)
+
     def refreshPortComboBox(self):
         self.portComboBox.clear()
         for key, value in self.serialThread.getPorts().items():
@@ -128,6 +131,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             data.decode().replace("\r", "")
         )
         self.textViewPlainTextEdit.centerCursor()
+
+    def sendData(self):
+        self.textViewSendLineEdit.text().encode()
+        _endingIndex = self.textViewSendLineEndingComboBox.currentIndex()
+        _ending = b""
+        if _endingIndex == 1:
+            _ending = b"\n"
+        elif _endingIndex == 2:
+            _ending = b"\r"
+        elif _endingIndex == 3:
+            _ending = b"\r\n"
+
+        self.serialThread.transmit(
+            self.textViewSendLineEdit.text().encode() + _ending
+        )
 
     def closeEvent(self, event):
         try:
