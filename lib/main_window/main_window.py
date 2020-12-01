@@ -3,6 +3,7 @@ import logging
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
+from ..background_thread.background_thread import BackgroundThread
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -31,9 +32,11 @@ BAUDRATE = (
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+    backgroundThread = BackgroundThread()
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         for baudrate in BAUDRATE:
-            self.portBaudrateComboBox.addItem(f"{baudrate}")
+            self.portBaudrateComboBox.addItem(f"{baudrate:,}")
         self.portBaudrateComboBox.setCurrentIndex(BAUDRATE.index(115200))
