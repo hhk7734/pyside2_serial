@@ -66,7 +66,7 @@ class SerialThread(QThread):
                 if cmd[0] == self.CMD_TERMINATE:
                     runningCondition = False
                 elif cmd[0] == self.CMD_TRANSMIT:
-                    self._uart.write(cmd[1].encode())  # str -> bytes
+                    self._uart.write(cmd[1])
             try:
                 data = self._uart.read(100)
             except serial.serialutil.SerialException:
@@ -74,7 +74,7 @@ class SerialThread(QThread):
                 break
 
             if data != b"":
-                self.receivedData.emit(data.decode())  # bytes -> str
+                self.receivedData.emit(data)
 
         self._uart.close()
         log.info("SerialThread is Finished.")
@@ -88,7 +88,7 @@ class SerialThread(QThread):
     def terminateEventLoop(self):
         self.putCmdQueue(self.CMD_TERMINATE)
 
-    def transmit(self, data: str):
+    def transmit(self, data: bytes):
         self.putCmdQueue(self.CMD_TRANSMIT, data)
 
     @classmethod
