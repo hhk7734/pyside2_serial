@@ -20,7 +20,7 @@ class SerialThread(QThread):
 
     def __init__(self):
         super().__init__()
-        self.queue = queue.Queue()
+        self._cmdQueue = queue.Queue()
 
     @classmethod
     def getPorts(cls):
@@ -29,10 +29,10 @@ class SerialThread(QThread):
     def run(self):
         runningCondition = True
         while runningCondition:
-            if not self.queue.empty():
-                cmd = self.queue.get()
+            if not self._cmdQueue.empty():
+                cmd = self._cmdQueue.get()
                 if cmd[0] == self.CMD_TERMINATE:
                     runningCondition = False
 
-    def putQueue(self, *args):
-        self.queue.put(args)
+    def putCmdQueue(self, *args):
+        self._cmdQueue.put(args)
