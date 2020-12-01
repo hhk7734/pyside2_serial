@@ -1,4 +1,5 @@
 import logging
+import serial
 
 from PySide2.QtWidgets import QMainWindow
 
@@ -7,28 +8,6 @@ from ..background_thread.serial_thread import SerialThread
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
-
-
-BAUDRATE = (
-    300,
-    1_200,
-    2_400,
-    4_800,
-    9_600,
-    19_200,
-    38_400,
-    57_600,
-    74_880,
-    115_200,
-    230_400,
-    250_000,
-    460_800,
-    500_000,
-    576_000,
-    921_600,
-    1_000_000,
-    2_000_000,
-)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -42,9 +21,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.portRefreshPushButton.clicked.connect(self.refreshPortComboBox)
 
-        for baudrate in BAUDRATE:
+        _BAUDRATES = serial.Serial.BAUDRATES
+        for baudrate in _BAUDRATES:
             self.portBaudrateComboBox.addItem(f"{baudrate:,}")
-        self.portBaudrateComboBox.setCurrentIndex(BAUDRATE.index(115200))
+        self.portBaudrateComboBox.setCurrentIndex(_BAUDRATES.index(115200))
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()

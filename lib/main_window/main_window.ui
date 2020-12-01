@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
+    <width>626</width>
     <height>640</height>
    </rect>
   </property>
@@ -260,7 +260,7 @@
                  </sizepolicy>
                 </property>
                 <property name="editable">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                </widget>
               </item>
@@ -304,7 +304,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>625</width>
+     <width>626</width>
      <height>22</height>
     </rect>
    </property>
