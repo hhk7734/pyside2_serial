@@ -94,7 +94,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QTimer.singleShot(100, self.enablePortOpenClosePushButton)
 
     def closeEvent(self, event):
-        self.serialThread.terminateEventLoop()
+        try:
+            self.serialThread.terminateEventLoop()
+        except:
+            pass
         QThread.msleep(300)
         log.debug("Finished MainWindow")
         super().closeEvent(event)
