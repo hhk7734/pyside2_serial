@@ -46,6 +46,9 @@
                    <property name="text">
                     <string>No Parity</string>
                    </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -85,6 +88,9 @@
                   <widget class="QRadioButton" name="port8BitsRadioButton">
                    <property name="text">
                     <string>8 Bits</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -133,6 +139,9 @@
                    <property name="text">
                     <string>1 Stop bit</string>
                    </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -166,12 +175,18 @@
                    <property name="text">
                     <string>No Flow Control</string>
                    </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QRadioButton" name="portHardwareControlRadioButton">
                    <property name="text">
                     <string>Hardware Control</string>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
