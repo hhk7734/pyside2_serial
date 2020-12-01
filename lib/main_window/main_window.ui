@@ -287,6 +287,110 @@
          <attribute name="title">
           <string>Text View</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QWidget" name="widget_5" native="true">
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QCheckBox" name="textViewEnableCheckBox">
+                 <property name="text">
+                  <string>Enable</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Num. Lines:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="textViewMaxNumLinesSpinBox">
+                 <property name="maximum">
+                  <number>3000</number>
+                 </property>
+                 <property name="value">
+                  <number>1000</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="textViewClearPushButton">
+                 <property name="text">
+                  <string>Clear</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLineEdit" name="textViewSendLineEdit"/>
+              </item>
+              <item>
+               <widget class="QComboBox" name="textViewSendLineEndingComboBox">
+                <item>
+                 <property name="text">
+                  <string>No line ending</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Newline(\n)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Carriage return(\r)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Both(\r\n)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="textViewSendPushButton">
+                <property name="text">
+                 <string>Send</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPlainTextEdit" name="textViewPlainTextEdit">
+              <property name="undoRedoEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="commandsTab">
          <attribute name="title">
