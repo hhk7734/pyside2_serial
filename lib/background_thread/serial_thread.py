@@ -12,7 +12,7 @@ elif os.name == "posix":
 
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 
 
 class SerialThread(QThread):
@@ -66,6 +66,7 @@ class SerialThread(QThread):
                 if cmd[0] == self.CMD_TERMINATE:
                     runningCondition = False
                 elif cmd[0] == self.CMD_TRANSMIT:
+                    log.debug(cmd[1])
                     self._uart.write(cmd[1])
             try:
                 data = self._uart.read(100)
@@ -74,6 +75,7 @@ class SerialThread(QThread):
                 break
 
             if data != b"":
+                log.debug(data)
                 self.receivedData.emit(data)
 
         self._uart.close()
