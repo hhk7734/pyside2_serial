@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
-class BackgroundThread(QThread):
+class SerialThread(QThread):
     CMD_TERMINATE = 1
 
     def __init__(self):

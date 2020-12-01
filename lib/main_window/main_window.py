@@ -3,7 +3,7 @@ import logging
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
-from ..background_thread.background_thread import BackgroundThread
+from ..background_thread.serial_thread import SerialThread
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -32,7 +32,7 @@ BAUDRATE = (
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    backgroundThread = BackgroundThread()
+    serialThread = SerialThread()
 
     def __init__(self):
         super().__init__()
@@ -48,5 +48,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
-        for key, value in self.backgroundThread.getPorts().items():
+        for key, value in self.serialThread.getPorts().items():
             self.portComboBox.addItem(key, userData=value)
