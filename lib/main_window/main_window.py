@@ -37,6 +37,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        self.refreshPortComboBox()
+
+        self.portRefreshPushButton.clicked.connect(self.refreshPortComboBox)
+
         for baudrate in BAUDRATE:
             self.portBaudrateComboBox.addItem(f"{baudrate:,}")
         self.portBaudrateComboBox.setCurrentIndex(BAUDRATE.index(115200))
+
+    def refreshPortComboBox(self):
+        self.portComboBox.clear()
+        for key, value in self.backgroundThread.getPorts().items():
+            self.portComboBox.addItem(key, userData=value)
