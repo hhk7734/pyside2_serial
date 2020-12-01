@@ -2,6 +2,7 @@ import logging
 import serial
 
 from PySide2.QtCore import QThread, QTimer
+from PySide2.QtGui import QTextCursor
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
@@ -30,6 +31,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.portOpenClosePushButton.clicked.connect(self.openClosePort)
 
         self.serialThread.disconnectedAbnomally.connect(self.openClosePort)
+
+        self.textViewEnableCheckBox.clicked.connect(self.enableTextView)
+
+        self.textViewClearPushButton.clicked.connect(
+            self.textViewPlainTextEdit.clear
+        )
+
+        self.textViewMaxNumLinesSpinBox.valueChanged.connect(
+            self.textViewPlainTextEdit.setMaximumBlockCount
+        )
+
+        self.textViewPlainTextEdit.setMaximumBlockCount(
+            self.textViewMaxNumLinesSpinBox.value()
+        )
+        self.textViewPlainTextEdit.mouseDoubleClickEvent = (
+            self.textViewMouseEvent
+        )
+        self.textViewPlainTextEdit.mouseMoveEvent = self.textViewMouseEvent
+        self.textViewPlainTextEdit.mousePressEvent = self.textViewMouseEvent
+        self.textViewPlainTextEdit.mouseReleaseEvent = self.textViewMouseEvent
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
@@ -92,6 +113,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.portOpenClosePushButton.setEnabled(True)
             else:
                 QTimer.singleShot(100, self.enablePortOpenClosePushButton)
+
+    def enableTextView(self):
+        if self.textViewEnableCheckBox.isChecked():
+            self.serialThread.receivedData.connect(self.appendTextView)
+        else:
+            self.serialThread.receivedData.disconnect(self.appendTextView)
+
+    def textViewMouseEvent(self, event):
+        pass
+
+    def appendTextView(self, data: bytes):
+        self.textViewPlainTextEdit.insertPlainText(
+            data.decode().replace("\r", "")
+        )
+        self.textViewPlainTextEdit.centerCursor()
 
     def closeEvent(self, event):
         try:
