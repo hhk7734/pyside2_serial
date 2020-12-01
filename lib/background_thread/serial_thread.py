@@ -19,7 +19,7 @@ class SerialThread(QThread):
     CMD_TERMINATE = 1
     CMD_TRANSMIT = 2
 
-    receivedData = Signal(str)
+    receivedData = Signal(bytes)
     disconnectedAbnomally = Signal()
 
     def __init__(self):
