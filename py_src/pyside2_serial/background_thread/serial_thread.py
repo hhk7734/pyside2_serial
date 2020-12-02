@@ -54,12 +54,16 @@ class SerialThread(QThread):
 
     def run(self):
         log.info("SerialThread Starts.")
-        self._uart.open()
+        try:
+            self._uart.open()
+            runningCondition = True
+        except serial.serialutil.SerialException:
+            self.disconnectedAbnomally.emit()
+            runningCondition = False
 
         while not self._cmdQueue.empty():
             self._cmdQueue.get()
 
-        runningCondition = True
         while runningCondition:
             if not self._cmdQueue.empty():
                 cmd = self._cmdQueue.get()
