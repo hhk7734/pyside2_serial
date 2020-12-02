@@ -1,0 +1,28 @@
+[tool.briefcase]
+project_name = "PySide2 Serial"
+bundle = "net.loliot"
+version = "0.1.0"
+author = "Hyeonki Hong"
+author_email = "hhk7734@gmail.com"
+requires = []
+
+[tool.briefcase.app.pyside2_serial]
+formal_name = "PySide2Serial"
+description = ""
+sources = ['py_src/pyside2_serial']
+requires = ['pyside2==5.15.1', 'pyserial==3.5']
+
+[tool.briefcase.app.pyside2_serial.macOS]
+requires = []
+
+[tool.briefcase.app.pyside2_serial.windows]
+requires = []
+
+[tool.briefcase.app.pyside2_serial.linux]
+requires = []
+
+[tool.briefcase.app.pyside2_serial.iOS]
+requires = []
+
+[tool.briefcase.app.pyside2_serial.android]
+requires = []
