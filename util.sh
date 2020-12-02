@@ -28,8 +28,9 @@ eval set -- "$options"
 while true; do
     case "$1" in
     --uic)
-        pyside2-uic $SCRIPT_PATH/lib/main_window/main_window.ui \
-            -o $SCRIPT_PATH/lib/main_window/ui_main_window.py
+        pyside2-uic \
+            $SCRIPT_PATH/py_src/pyside2_serial/main_window/main_window.ui \
+            -o $SCRIPT_PATH/py_src/pyside2_serial/main_window/ui_main_window.py
         shift
         ;;
     -h | --help)
