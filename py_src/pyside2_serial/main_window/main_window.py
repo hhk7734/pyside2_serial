@@ -139,7 +139,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewPlainTextEdit.centerCursor()
 
     def sendData(self):
-        self.textViewSendLineEdit.text().encode()
         _endingIndex = self.textViewSendLineEndingComboBox.currentIndex()
         _ending = b""
         if _endingIndex == 1:
