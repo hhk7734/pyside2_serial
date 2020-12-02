@@ -131,9 +131,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     def appendTextView(self, data: bytes):
-        self.textViewPlainTextEdit.insertPlainText(
-            data.decode().replace("\r", "")
-        )
+        try:
+            _temp = data.decode().replace("\r", "")
+        except UnicodeDecodeError:
+            return
+        self.textViewPlainTextEdit.insertPlainText(_temp)
         self.textViewPlainTextEdit.centerCursor()
 
     def sendData(self):
