@@ -55,6 +55,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewSendPushButton.clicked.connect(self.sendData)
         self.textViewSendLineEdit.returnPressed.connect(self.sendData)
 
+        self.textViewSendLineEndingComboBox.setCurrentIndex(1)
+
     def refreshPortComboBox(self):
         self.portComboBox.clear()
         for key, value in self.serialThread.getPorts().items():
