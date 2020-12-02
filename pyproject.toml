@@ -10,7 +10,7 @@ requires = []
 formal_name = "PySide2Serial"
 description = ""
 sources = ['py_src/pyside2_serial']
-requires = ['pyside2==5.15.1', 'pyserial==3.5']
+requires = ['pyside2==5.15.2', 'pyserial==3.5']
 
 [tool.briefcase.app.pyside2_serial.macOS]
 requires = []
