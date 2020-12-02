@@ -100,8 +100,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         else:
             self.portOpenClosePushButton.setEnabled(False)
-            self.serialThread.terminateEventLoop()
             self.portOpenClosePushButton.setText("Open")
+            try:
+                # When abnomal disconnection, loop may already be stopped.
+                self.serialThread.terminateEventLoop()
+            except RuntimeError:
+                pass
 
         QTimer.singleShot(100, self.enablePortOpenClosePushButton)
 
@@ -150,7 +154,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         try:
             self.serialThread.terminateEventLoop()
-        except:
+        except RuntimeError:
             pass
         QThread.msleep(300)
         log.debug("Finished MainWindow")
