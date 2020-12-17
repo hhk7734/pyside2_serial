@@ -4,7 +4,7 @@ from queue import Queue
 
 from PySide2.QtCore import QThread
 
-from .background_process import BackgroundProcess
+from ._background_process import BackgroundProcess
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
