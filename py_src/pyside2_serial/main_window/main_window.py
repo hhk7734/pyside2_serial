@@ -74,6 +74,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         backgroundBridgeThread
         """
         self.backgroundBridgeThread.start()
+        self.backgroundBridgeThread.opendSerialPort.connect(
+            self.opendSerialPort
+        )
+        self.backgroundBridgeThread.closedSerialPort.connect(
+            self.closedSerialPort
+        )
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
@@ -81,8 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.portComboBox.addItem(port, userData=desc)
 
     def openSerialPort(self) -> None:
-        # self.portOpenClosePushButton.setEnabled(False)
-        self.portOpenClosePushButton.setText("Close")
+        self.portOpenClosePushButton.setEnabled(False)
         port = self.portComboBox.currentText()
         baudrate = int(self.portBaudrateComboBox.currentText().replace(",", ""))
         parity = serial.PARITY_NONE
@@ -110,10 +115,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             stopbits=stopbits,
         )
 
+    def opendSerialPort(self) -> None:
+        self.portOpenClosePushButton.setText("Close")
+        self.portOpenClosePushButton.setEnabled(True)
+
     def closeSerialPort(self) -> None:
-        # self.portOpenClosePushButton.setEnabled(False)
-        self.portOpenClosePushButton.setText("Open")
+        self.portOpenClosePushButton.setEnabled(False)
         self.backgroundBridgeThread.closeSerialPort()
+
+    def closedSerialPort(self) -> None:
+        self.portOpenClosePushButton.setText("Open")
+        self.portOpenClosePushButton.setEnabled(True)
 
     def openClosePort(self):
         if self.portOpenClosePushButton.text() == "Open":
@@ -143,18 +155,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewPlainTextEdit.centerCursor()
 
     def sendTextViewToSerialPort(self) -> None:
-        _endingIndex = self.textViewSendLineEndingComboBox.currentIndex()
-        _ending = b""
-        if _endingIndex == 1:
-            _ending = b"\n"
-        elif _endingIndex == 2:
-            _ending = b"\r"
-        elif _endingIndex == 3:
-            _ending = b"\r\n"
+        if self.portOpenClosePushButton.text() == "Close":
+            # When serial port already opened.
+            _endingIndex = self.textViewSendLineEndingComboBox.currentIndex()
+            _ending = b""
+            if _endingIndex == 1:
+                _ending = b"\n"
+            elif _endingIndex == 2:
+                _ending = b"\r"
+            elif _endingIndex == 3:
+                _ending = b"\r\n"
 
-        self.backgroundBridgeThread.sendToSerialPort(
-            self.textViewSendLineEdit.text().encode() + _ending
-        )
+            self.backgroundBridgeThread.sendToSerialPort(
+                self.textViewSendLineEdit.text().encode() + _ending
+            )
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.backgroundBridgeThread.terminateLoop()

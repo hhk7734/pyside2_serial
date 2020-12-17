@@ -14,6 +14,8 @@ log.setLevel(logging.DEBUG)
 
 class BackgroundBridgeThread(QThread):
     recvFromSerialPortSignal = Signal(bytes)
+    opendSerialPort = Signal()
+    closedSerialPort = Signal()
 
     def __init__(self) -> None:
         super().__init__()
@@ -34,16 +36,23 @@ class BackgroundBridgeThread(QThread):
                 command = self._commandQueue.get()
                 if command[0] == CMD.TERMINATE:
                     runningCondition = False
-                    self._parentConnection.send([CMD.TERMINATE])
+                    self._parentConnection.send(command)
                     break
-                elif command[0] == CMD.START_SERIAL_PORT:
-                    self._backgroundProcess
-                    pass
+
+                self._parentConnection.send(command)
 
             if self._parentConnection.poll():
                 # child -> parent
                 command = self._parentConnection.recv()
-                pass
+                if command[0] == CMD.RECV_SERIAL_PORT:
+                    self.recvFromSerialPortSignal.emit(command[1])
+                elif command[0] == CMD.OPEN_SERIAL_PORT:
+                    if command[1]:
+                        self.opendSerialPort.emit()
+                    else:
+                        self.closedSerialPort.emit()
+                elif command[0] == CMD.CLOSE_SERIAL_PORT:
+                    self.closedSerialPort.emit()
 
             self.msleep(10)
 
@@ -66,10 +75,24 @@ class BackgroundBridgeThread(QThread):
         rtscts: bool = False,
         dsrdtr: bool = False,
     ) -> None:
-        pass
+        self._commandQueue.put(
+            [
+                CMD.OPEN_SERIAL_PORT,
+                {
+                    "port": port,
+                    "baudrate": baudrate,
+                    "parity": parity,
+                    "bytesize": bytesize,
+                    "stopbits": stopbits,
+                    "xonxoff": xonxoff,
+                    "rtscts": rtscts,
+                    "dsrdtr": dsrdtr,
+                },
+            ]
+        )
 
     def closeSerialPort(self) -> None:
-        pass
+        self._commandQueue.put([CMD.CLOSE_SERIAL_PORT])
 
     def sendToSerialPort(self, data: bytes) -> None:
-        pass
+        self._commandQueue.put([CMD.SEND_SERIAL_PORT, data])

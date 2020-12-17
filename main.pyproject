@@ -1,8 +1,5 @@
 {
     "files": [
-        "py_src/pyside2_serial/app.py",
-        "py_src/pyside2_serial/main_window/main_window.py",
         "py_src/pyside2_serial/main_window/main_window.ui",
-        "py_src/pyside2_serial/background_thread/serial_thread.py"
         ]
 }
