@@ -6,12 +6,14 @@ from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
 from ..background_thread.serial_thread import SerialThread
+from ..background_process.background_bridge_thread import BackgroundBridgeThread
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+    backgroundBridgeThread = BackgroundBridgeThread()
     serialThread = SerialThread()
 
     def __init__(self):
@@ -58,6 +60,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewSendLineEdit.returnPressed.connect(self.sendData)
 
         self.textViewSendLineEndingComboBox.setCurrentIndex(1)
+
+        """
+        backgroundBridgeThread
+        """
+        self.backgroundBridgeThread.start()
 
         """
         serialThread
@@ -162,6 +169,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def closeEvent(self, event):
+        self.backgroundBridgeThread.terminateLoop()
         try:
             self.serialThread.terminateEventLoop()
         except RuntimeError:
