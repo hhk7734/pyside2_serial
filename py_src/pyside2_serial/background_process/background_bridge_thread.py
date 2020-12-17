@@ -61,5 +61,8 @@ class BackgroundBridgeThread(QThread):
         xonxoff: bool = False,
         rtscts: bool = False,
         dsrdtr: bool = False,
-    ):
+    ) -> None:
+        pass
+
+    def closeSerialPort(self) -> None:
         pass

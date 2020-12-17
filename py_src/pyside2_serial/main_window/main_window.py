@@ -66,18 +66,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         self.backgroundBridgeThread.start()
 
-        """
-        serialThread
-        """
-        self.serialThread.disconnectedAbnomally.connect(self.openClosePort)
-
     def refreshPortComboBox(self):
         self.portComboBox.clear()
         for key, value in self.serialThread.getPorts().items():
             self.portComboBox.addItem(key, userData=value)
 
-    def openSerialPort(self):
-        self.portOpenClosePushButton.setEnabled(False)
+    def openSerialPort(self) -> None:
+        # self.portOpenClosePushButton.setEnabled(False)
         self.portOpenClosePushButton.setText("Close")
         port = self.portComboBox.currentText()
         baudrate = int(self.portBaudrateComboBox.currentText().replace(",", ""))
@@ -106,31 +101,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             stopbits=stopbits,
         )
 
+    def closeSerialPort(self) -> None:
+        # self.portOpenClosePushButton.setEnabled(False)
+        self.portOpenClosePushButton.setText("Open")
+        self.backgroundBridgeThread.closeSerialPort()
+
     def openClosePort(self):
         if self.portOpenClosePushButton.text() == "Open":
             self.openSerialPort()
         else:
-            self.portOpenClosePushButton.setEnabled(False)
-            self.portOpenClosePushButton.setText("Open")
-            try:
-                # When abnomal disconnection, loop may already be stopped.
-                self.serialThread.terminateEventLoop()
-            except RuntimeError:
-                pass
-
-        QTimer.singleShot(100, self.enablePortOpenClosePushButton)
-
-    def enablePortOpenClosePushButton(self):
-        if self.portOpenClosePushButton.text() == "Open":
-            if self.serialThread.isRunning():
-                QTimer.singleShot(100, self.enablePortOpenClosePushButton)
-            else:
-                self.portOpenClosePushButton.setEnabled(True)
-        else:
-            if self.serialThread.isRunning():
-                self.portOpenClosePushButton.setEnabled(True)
-            else:
-                QTimer.singleShot(100, self.enablePortOpenClosePushButton)
+            self.closeSerialPort()
 
     def enableTextView(self):
         if self.textViewEnableCheckBox.isChecked():
@@ -165,10 +145,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.backgroundBridgeThread.terminateLoop()
-        try:
-            self.serialThread.terminateEventLoop()
-        except RuntimeError:
-            pass
-        QThread.msleep(300)
         log.debug("Finished MainWindow")
         super().closeEvent(event)
