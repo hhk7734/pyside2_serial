@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.1
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -108,10 +108,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.port1StopBitRadioButton)
 
-        self.port2StopBitRadioButton_9 = QRadioButton(self.widget_3)
-        self.port2StopBitRadioButton_9.setObjectName(u"port2StopBitRadioButton_9")
+        self.port2StopBitRadioButton = QRadioButton(self.widget_3)
+        self.port2StopBitRadioButton.setObjectName(u"port2StopBitRadioButton")
 
-        self.verticalLayout_5.addWidget(self.port2StopBitRadioButton_9)
+        self.verticalLayout_5.addWidget(self.port2StopBitRadioButton)
 
         self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -284,7 +284,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 626, 22))
+        self.menubar.setGeometry(QRect(0, 0, 626, 21))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -309,7 +309,7 @@ class Ui_MainWindow(object):
         self.port6BitsRadioButton.setText(QCoreApplication.translate("MainWindow", u"6 Bits", None))
         self.port5BitsRadioButton.setText(QCoreApplication.translate("MainWindow", u"5 Bits", None))
         self.port1StopBitRadioButton.setText(QCoreApplication.translate("MainWindow", u"1 Stop bit", None))
-        self.port2StopBitRadioButton_9.setText(QCoreApplication.translate("MainWindow", u"2 Stop bit", None))
+        self.port2StopBitRadioButton.setText(QCoreApplication.translate("MainWindow", u"2 Stop bit", None))
         self.portNoFlowControlRadioButton.setText(QCoreApplication.translate("MainWindow", u"No Flow Control", None))
         self.portHardwareControlRadioButton.setText(QCoreApplication.translate("MainWindow", u"Hardware Control", None))
         self.portSoftwareControlRadioButton.setText(QCoreApplication.translate("MainWindow", u"Software Control", None))

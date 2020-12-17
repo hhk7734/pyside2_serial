@@ -145,7 +145,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="port2StopBitRadioButton_9">
+                  <widget class="QRadioButton" name="port2StopBitRadioButton">
                    <property name="text">
                     <string>2 Stop bit</string>
                    </property>
@@ -409,7 +409,7 @@
      <x>0</x>
      <y>0</y>
      <width>626</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
