@@ -2,6 +2,7 @@ import logging
 import serial
 
 from PySide2.QtCore import QThread, QTimer
+from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
@@ -16,8 +17,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     backgroundBridgeThread = BackgroundBridgeThread()
     serialThread = SerialThread()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
+        log.debug("start")
         self.setupUi(self)
 
         """
@@ -56,8 +58,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewPlainTextEdit.mousePressEvent = self.textViewMouseEvent
         self.textViewPlainTextEdit.mouseReleaseEvent = self.textViewMouseEvent
 
-        self.textViewSendPushButton.clicked.connect(self.sendData)
-        self.textViewSendLineEdit.returnPressed.connect(self.sendData)
+        self.textViewSendPushButton.clicked.connect(
+            self.sendTextViewToSerialPort
+        )
+        self.textViewSendLineEdit.returnPressed.connect(
+            self.sendTextViewToSerialPort
+        )
 
         self.textViewSendLineEndingComboBox.setCurrentIndex(1)
 
@@ -129,7 +135,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewPlainTextEdit.insertPlainText(_temp)
         self.textViewPlainTextEdit.centerCursor()
 
-    def sendData(self):
+    def sendTextViewToSerialPort(self) -> None:
         _endingIndex = self.textViewSendLineEndingComboBox.currentIndex()
         _ending = b""
         if _endingIndex == 1:
@@ -139,11 +145,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif _endingIndex == 3:
             _ending = b"\r\n"
 
-        self.serialThread.transmit(
+        self.backgroundBridgeThread.sendToSerialPort(
             self.textViewSendLineEdit.text().encode() + _ending
         )
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.backgroundBridgeThread.terminateLoop()
-        log.debug("Finished MainWindow")
+        log.debug("finish")
         super().closeEvent(event)

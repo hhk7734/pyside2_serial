@@ -66,3 +66,6 @@ class BackgroundBridgeThread(QThread):
 
     def closeSerialPort(self) -> None:
         pass
+
+    def sendToSerialPort(self, data: bytes) -> None:
+        pass
