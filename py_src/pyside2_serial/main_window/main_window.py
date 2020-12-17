@@ -1,7 +1,6 @@
 import logging
 import serial
 
-from PySide2.QtCore import QThread, QTimer
 from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QMainWindow
 
@@ -15,7 +14,6 @@ log.setLevel(logging.DEBUG)
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     backgroundBridgeThread = BackgroundBridgeThread()
-    serialThread = SerialThread()
 
     def __init__(self) -> None:
         super().__init__()
@@ -74,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
-        for key, value in self.serialThread.getPorts().items():
+        for key, value in SerialThread.getPorts().items():
             self.portComboBox.addItem(key, userData=value)
 
     def openSerialPort(self) -> None:
@@ -120,9 +118,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def enableTextView(self):
         if self.textViewEnableCheckBox.isChecked():
-            self.serialThread.receivedData.connect(self.appendTextView)
+            self.backgroundBridgeThread.recvFromSerialPortSignal.connect(
+                self.appendTextView
+            )
         else:
-            self.serialThread.receivedData.disconnect(self.appendTextView)
+            self.backgroundBridgeThread.recvFromSerialPortSignal.disconnect(
+                self.appendTextView
+            )
 
     def textViewMouseEvent(self, event):
         pass

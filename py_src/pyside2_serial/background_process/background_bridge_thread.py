@@ -3,7 +3,7 @@ from multiprocessing import Pipe
 from queue import Queue
 import serial
 
-from PySide2.QtCore import QThread
+from PySide2.QtCore import QThread, Signal
 
 from ._background_process import BackgroundProcess
 
@@ -13,6 +13,8 @@ log.setLevel(logging.DEBUG)
 
 class BackgroundBridgeThread(QThread):
     CMD_TERMINATE: int = 1
+
+    recvFromSerialPortSignal = Signal(bytes)
 
     def __init__(self) -> None:
         super().__init__()
