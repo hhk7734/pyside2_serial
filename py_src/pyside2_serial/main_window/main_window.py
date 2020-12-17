@@ -2,7 +2,6 @@ import logging
 import serial
 
 from PySide2.QtCore import QThread, QTimer
-from PySide2.QtGui import QTextCursor
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
@@ -19,8 +18,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
+        """
+        portTab
+        """
         self.refreshPortComboBox()
-
         self.portRefreshPushButton.clicked.connect(self.refreshPortComboBox)
 
         _BAUDRATES = serial.Serial.BAUDRATES
@@ -30,8 +31,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.portOpenClosePushButton.clicked.connect(self.openClosePort)
 
-        self.serialThread.disconnectedAbnomally.connect(self.openClosePort)
-
+        """
+        textViewTab
+        """
         self.textViewEnableCheckBox.clicked.connect(self.enableTextView)
 
         self.textViewClearPushButton.clicked.connect(
@@ -56,6 +58,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textViewSendLineEdit.returnPressed.connect(self.sendData)
 
         self.textViewSendLineEndingComboBox.setCurrentIndex(1)
+
+        """
+        serialThread
+        """
+        self.serialThread.disconnectedAbnomally.connect(self.openClosePort)
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
