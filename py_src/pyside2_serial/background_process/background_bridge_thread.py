@@ -1,6 +1,7 @@
 import logging
 from multiprocessing import Pipe
 from queue import Queue
+import serial
 
 from PySide2.QtCore import QThread
 
@@ -37,6 +38,7 @@ class BackgroundBridgeThread(QThread):
 
             if self._parentConnection.poll():
                 # child -> parent
+                command = self._parentConnection.recv()
                 pass
 
             self.msleep(10)
@@ -48,3 +50,16 @@ class BackgroundBridgeThread(QThread):
         self._commandQueue.put([self.CMD_TERMINATE])
         while self.isRunning():
             self.msleep(100)
+
+    def openSerialPort(
+        self,
+        port: str,
+        baudrate: int = 115200,
+        parity: str = serial.PARITY_NONE,
+        bytesize: int = serial.EIGHTBITS,
+        stopbits: float = serial.STOPBITS_ONE,
+        xonxoff: bool = False,
+        rtscts: bool = False,
+        dsrdtr: bool = False,
+    ):
+        pass

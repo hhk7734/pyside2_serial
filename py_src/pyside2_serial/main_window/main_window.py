@@ -76,44 +76,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for key, value in self.serialThread.getPorts().items():
             self.portComboBox.addItem(key, userData=value)
 
+    def openSerialPort(self):
+        self.portOpenClosePushButton.setEnabled(False)
+        self.portOpenClosePushButton.setText("Close")
+        port = self.portComboBox.currentText()
+        baudrate = int(self.portBaudrateComboBox.currentText().replace(",", ""))
+        parity = serial.PARITY_NONE
+        if self.portOddParityRadioButton.isChecked():
+            parity = serial.PARITY_ODD
+        elif self.portEvenParityRadioButton.isChecked():
+            parity = serial.PARITY_EVEN
+        bytesize = serial.EIGHTBITS
+        if self.port7BitsRadioButton.isChecked():
+            bytesize = serial.SEVENBITS
+        elif self.port6BitsRadioButton.isChecked():
+            bytesize = serial.SIXBITS
+        elif self.port5BitsRadioButton.isChecked():
+            bytesize = serial.FIVEBITS
+        stopbits = serial.STOPBITS_ONE
+        if self.port2StopBitRadioButton.isChecked():
+            stopbits = serial.STOPBITS_TWO
+        # TODO: Control
+
+        self.backgroundBridgeThread.openSerialPort(
+            port=port,
+            baudrate=baudrate,
+            parity=parity,
+            bytesize=bytesize,
+            stopbits=stopbits,
+        )
+
     def openClosePort(self):
         if self.portOpenClosePushButton.text() == "Open":
-            self.portOpenClosePushButton.setEnabled(False)
-            self.portOpenClosePushButton.setText("Close")
-            _port = self.portComboBox.currentText()
-            _baudrate = int(
-                self.portBaudrateComboBox.currentText().replace(",", "")
-            )
-            _parity = None
-            if self.portNoParityRadioButton.isChecked():
-                _parity = serial.PARITY_NONE
-            elif self.portOddParityRadioButton.isChecked():
-                _parity = serial.PARITY_ODD
-            elif self.portEvenParityRadioButton.isChecked():
-                _parity = serial.PARITY_EVEN
-            _bytesize = None
-            if self.port8BitsRadioButton.isChecked():
-                _bytesize = serial.EIGHTBITS
-            elif self.port7BitsRadioButton.isChecked():
-                _bytesize = serial.SEVENBITS
-            elif self.port6BitsRadioButton.isChecked():
-                _bytesize = serial.SIXBITS
-            elif self.port5BitsRadioButton.isChecked():
-                _bytesize = serial.FIVEBITS
-            _stopbits = None
-            if self.port1StopBitRadioButton.isChecked():
-                _stopbits = serial.STOPBITS_ONE
-            elif self.port2StopBitRadioButton.isChecked():
-                _stopbits = serial.STOPBITS_TWO
-            # TODO: Control
-
-            self.serialThread.start(
-                port=_port,
-                baudrate=_baudrate,
-                parity=_parity,
-                bytesize=_bytesize,
-                stopbits=_stopbits,
-            )
+            self.openSerialPort()
         else:
             self.portOpenClosePushButton.setEnabled(False)
             self.portOpenClosePushButton.setText("Open")
