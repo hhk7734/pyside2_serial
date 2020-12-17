@@ -2,13 +2,13 @@ import logging
 from multiprocessing import connection, Process
 import time
 
+from .cmd import CMD
+
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
 class BackgroundProcess(Process):
-    CMD_TERMINATE: int = 1
-
     def __init__(self, connection: connection.Connection) -> None:
         super().__init__(daemon=True)
         self._childConnection = connection
@@ -21,7 +21,7 @@ class BackgroundProcess(Process):
             if self._childConnection.poll():
                 # parent -> child
                 command = self._childConnection.recv()
-                if command[0] == self.CMD_TERMINATE:
+                if command[0] == CMD.TERMINATE:
                     runningCondition = False
                     break
 

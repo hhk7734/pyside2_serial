@@ -1,0 +1,3 @@
+class CMD:
+    TERMINATE = 1
+    START_SERIAL_PORT = 2

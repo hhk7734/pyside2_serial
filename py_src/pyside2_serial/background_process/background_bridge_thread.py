@@ -6,14 +6,13 @@ import serial
 from PySide2.QtCore import QThread, Signal
 
 from ._background_process import BackgroundProcess
+from .cmd import CMD
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 
 class BackgroundBridgeThread(QThread):
-    CMD_TERMINATE: int = 1
-
     recvFromSerialPortSignal = Signal(bytes)
 
     def __init__(self) -> None:
@@ -33,10 +32,13 @@ class BackgroundBridgeThread(QThread):
         while runningCondition:
             if not self._commandQueue.empty():
                 command = self._commandQueue.get()
-                if command[0] == self.CMD_TERMINATE:
+                if command[0] == CMD.TERMINATE:
                     runningCondition = False
-                    self._parentConnection.send([self.CMD_TERMINATE])
+                    self._parentConnection.send([CMD.TERMINATE])
                     break
+                elif command[0] == CMD.START_SERIAL_PORT:
+                    self._backgroundProcess
+                    pass
 
             if self._parentConnection.poll():
                 # child -> parent
@@ -49,7 +51,7 @@ class BackgroundBridgeThread(QThread):
         log.debug("finish")
 
     def terminateLoop(self) -> None:
-        self._commandQueue.put([self.CMD_TERMINATE])
+        self._commandQueue.put([CMD.TERMINATE])
         while self.isRunning():
             self.msleep(100)
 
