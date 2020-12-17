@@ -1,12 +1,17 @@
 import logging
+import os
 import serial
 
 from PySide2.QtGui import QCloseEvent
 from PySide2.QtWidgets import QMainWindow
 
 from .ui_main_window import Ui_MainWindow
-from ..background_thread.serial_thread import SerialThread
 from ..background_process.background_bridge_thread import BackgroundBridgeThread
+
+if os.name == "nt":
+    from serial.tools.list_ports_windows import comports
+elif os.name == "posix":
+    from serial.tools.list_ports_posix import comports
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -72,8 +77,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def refreshPortComboBox(self):
         self.portComboBox.clear()
-        for key, value in SerialThread.getPorts().items():
-            self.portComboBox.addItem(key, userData=value)
+        for port, desc, _ in comports():
+            self.portComboBox.addItem(port, userData=desc)
 
     def openSerialPort(self) -> None:
         # self.portOpenClosePushButton.setEnabled(False)
